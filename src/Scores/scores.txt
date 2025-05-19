@@ -1,0 +1,4 @@
+Mejor puntuacion Facil = 60000
+Mejor puntuacion Normal = 60000
+Mejor puntuacion Dificil = 60000
+Mejor puntuacion Muy dificil = 60000
