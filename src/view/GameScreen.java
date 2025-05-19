@@ -1,25 +1,33 @@
-package Interface;
+package view;
 
 import javax.swing.JFrame;
+
+import Controller.ButtonController;
+import model.COLOR;
+
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 import java.awt.Dimension;
 
-public class View {
+public class GameScreen {
 
 	JFrame frame;
 	int gridSize;
 	JButton[][] JButtonMatrix;
 	ButtonController buttonController;
-	Dimension screenSize; 
+	Dimension screenSize;
+	int clicks;
+	
+	
 	/**
 	 * Create the application.
 	 */
-	public View(int size) {
+	public GameScreen(int size) {
+		this.clicks = 0;
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize(); //para conocer el tamaño del monitor
 		if (size > 7)
 			throw new IllegalArgumentException("");
@@ -30,6 +38,7 @@ public class View {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(int i) { // i = número de filas y columnas
+		
 		//Creo una matriz con los JButtons
 		gridSize = i;
 		JButtonMatrix = new JButton[i][i];
@@ -64,6 +73,8 @@ public class View {
 				int c=column;
 				JButtonMatrix[row][column].addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					
+					clicks++;
 					boolean match = buttonController.activeButton(r,c);
 					if (match) {
 						turnOffNeighbors(r, c);
@@ -96,8 +107,8 @@ public class View {
 
 	private void updateViews(int r, int c) {
 		
-		if (buttonController.win) {
-			EndScreen end = new EndScreen();
+		if (buttonController.getGameOver()) {
+			EndScreen end = new EndScreen(clicks,gridSize);
 			frame.dispose();
 			end.frame.setVisible(true);
 		}

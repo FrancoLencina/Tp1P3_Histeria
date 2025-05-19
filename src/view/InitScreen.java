@@ -1,4 +1,4 @@
-package Interface;
+package view;
 
 import java.awt.EventQueue;
 
@@ -15,6 +15,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JToolBar;
+
+import Scores.Score;
+
 import javax.swing.JComboBox;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -63,8 +66,7 @@ public class InitScreen {
         btnFacil.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnFacil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		General.difficulty = 0;
-        		View vw = new View(4);
+        		GameScreen vw = new GameScreen(4);
 				frame.dispose();
 				vw.frame.setVisible(true);
         	}
@@ -77,8 +79,7 @@ public class InitScreen {
         btnNormal.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnNormal.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		General.difficulty = 1;
-        		View vw = new View(5);
+        		GameScreen vw = new GameScreen(5);
 				frame.dispose();
 				vw.frame.setVisible(true);
         	}
@@ -91,8 +92,7 @@ public class InitScreen {
         btnDificil.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnDificil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		General.difficulty = 2;
-        		View vw = new View(6);
+        		GameScreen vw = new GameScreen(6);
 				frame.dispose();
 				vw.frame.setVisible(true);
         	}
@@ -105,8 +105,7 @@ public class InitScreen {
         btnMuyDificil.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnMuyDificil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		General.difficulty = 3;
-        		View vw = new View(7);
+        		GameScreen vw = new GameScreen(7);
 				frame.dispose();
 				vw.frame.setVisible(true);
         	}
@@ -121,7 +120,7 @@ public class InitScreen {
         mntmNewMenuItem.setBackground(new Color(128, 128, 128));
         mntmNewMenuItem.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		General.resetScores();
+        		Score.resetScores();
         		JOptionPane.showMessageDialog(null, "Las puntuaciones han sido reiniciadas");
         	}
         });

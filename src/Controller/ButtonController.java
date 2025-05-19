@@ -1,23 +1,26 @@
-package Interface;
+package Controller;
 
 import java.util.ArrayList;
 
+import Scores.Score;
+import model.Button;
+import model.COLOR;
+
 public class ButtonController {
 
-	Button [][] ButtonMatrix;
-	int boardSize;
-	boolean win;
+	private Button [][] ButtonMatrix;
+	private int boardSize;
+	private boolean gameOver;
 	
 	public ButtonController(int boardSize) {
 		ButtonMatrix = new Button[boardSize][boardSize];  
 		this.boardSize = boardSize;
-		win = false;
+		gameOver = false;
 	}
 	
 	
 	public boolean activeButton(int row, int column){
 		boolean result = false;
-		General.buttonPressed();
 		Button button = ButtonMatrix[row][column];
 		button.changeColor();
 		if (colorMatch(button,neighborhood(row, column))) {
@@ -27,7 +30,7 @@ public class ButtonController {
 		}
 		else
 			if (fullGrid()) {
-				win = true;
+				gameOver = true;
 			}
 		return result;
 	}
@@ -97,6 +100,11 @@ public class ButtonController {
 			}
 		}
 		return true;
+	}
+
+
+	public boolean getGameOver() {
+		return gameOver;
 	}
 }
 

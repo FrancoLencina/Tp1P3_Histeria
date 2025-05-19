@@ -1,4 +1,4 @@
-package Interface;
+package view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -7,6 +7,9 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JTextArea;
+
+import Scores.Score;
+
 import java.awt.CardLayout;
 import java.awt.Font;
 
@@ -15,11 +18,16 @@ public class EndScreen {
 	Dimension screenSize;
 	JFrame frame;
 	int score;
+	private int clicks;
+	private int difficulty;
 
 	/**
 	 * Create the application.
+	 * @param gridSize 
 	 */
-	public EndScreen() {
+	public EndScreen(int clicks, int gridSize) {
+		this.clicks = clicks;
+		this.difficulty = gridSize-4;
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		initialize();
 	}
@@ -37,12 +45,12 @@ public class EndScreen {
 		txt.setFont(new Font("Arial Black", Font.PLAIN, 12));
 		txt.setForeground(new Color(255, 255, 255));
 		txt.setBackground(new Color(50, 50, 50));
-		if (General.highScore(General.difficulty) < General.clicks)
-		txt.setText("      Felicitaciones!" + "\nGanaste en "+ General.clicks +" turnos!"
-				+ "\n La mejor puntuacion fue de:" + General.highScore(General.difficulty));
+		if (Score.highScore(difficulty) < clicks)
+		txt.setText("      Felicitaciones!" + "\nGanaste en "+ clicks +" turnos!"
+				+ "\n La mejor puntuacion fue de:" + Score.highScore(difficulty));
 		else {
-			General.scoreReplace(General.difficulty);
-			txt.setText("    Felicitaciones!" + "\nGanaste en "+ General.clicks +" turnos!"
+			Score.scoreReplace(difficulty);
+			txt.setText("    Felicitaciones!" + "\nGanaste en "+ clicks +" turnos!"
 					+ "\nNueva puntuacion record");
 		}
 		frame.getContentPane().add(txt);

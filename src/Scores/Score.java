@@ -1,4 +1,4 @@
-package Interface;
+package Scores;
 
 import java.io.File;
 import java.io.FileNotFoundException; 
@@ -7,15 +7,14 @@ import java.util.List;
 import java.util.Scanner; 
 import java.io.FileWriter;   
 
-public class General {
-	static int clicks = 0;
-	static int difficulty = 0;
+public class Score {
+	private int clicks;
 	
-	public static void buttonPressed() {
-		clicks ++;
+	public Score(int clicks) {
+		this.clicks = clicks;
 	}
 	
-	public static void scoreReplace(int diff) {
+	public void scoreReplace(int diff) {
 		try {
 			File myObj = new File("src/Scores/scores.txt");
 			String data = "";
@@ -27,7 +26,7 @@ public class General {
 			String temp = "";
 			boolean altered = false;
 			FileWriter myWriter = new FileWriter("src/Scores/scores.txt");
-	    	if (Integer.parseInt(lines.get(diff).substring(lines.get(diff).indexOf("=")+2)) > clicks) {
+	    	if (readScore(diff, lines) > clicks) {
 	    	  	temp = lines.get(diff).substring(0, lines.get(diff).indexOf("=")+1);
 	    	  	temp = temp + " " + clicks + "\n";
 	    	  	altered = true;
@@ -53,8 +52,12 @@ public class General {
 		    	e.printStackTrace();
 		    }
 		}
+
+	private int readScore(int diff, List<String> lines) {
+		return Integer.parseInt(lines.get(diff).substring(lines.get(diff).indexOf("=")+2));
+	}
 	  
-	public static void resetScores () {			//Realmente no los reinicia, los define en un valor poco razonable para el jugador promedio.
+	public void resetScores () {			//Realmente no los reinicia, los define en un valor poco razonable para el jugador promedio.
 		try {
 			File myObj = new File("src/Scores/scores.txt");
 			String data = "";
@@ -79,7 +82,7 @@ public class General {
 	    }
 	}
 	
-	public static int highScore (int diff) {
+	public int highScore (int diff) {
 		int high = 0;
 		try {
 			File myObj = new File("src/Scores/scores.txt");
@@ -89,7 +92,7 @@ public class General {
 				data = data + myReader.nextLine() + "\n";
 			}	
 			List<String> lines = data.lines().toList();
-			high = Integer.parseInt(lines.get(diff).substring(lines.get(diff).indexOf("=")+2));
+			high = readScore(diff, lines);
 			myReader.close();
 			}
 		catch (FileNotFoundException e) {
