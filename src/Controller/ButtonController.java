@@ -1,20 +1,18 @@
 package Controller;
 
 import java.util.ArrayList;
-
-import Scores.Score;
 import model.Button;
 import model.COLOR;
 
 public class ButtonController {
 
 	private Button [][] ButtonMatrix;
-	private int boardSize;
+	private int gridSize;
 	private boolean gameOver;
 	
-	public ButtonController(int boardSize) {
-		ButtonMatrix = new Button[boardSize][boardSize];  
-		this.boardSize = boardSize;
+	public ButtonController(int gridSize) {
+		ButtonMatrix = new Button[gridSize][gridSize];  
+		this.gridSize = gridSize;
 		gameOver = false;
 	}
 	
@@ -48,7 +46,7 @@ public class ButtonController {
 			list.add(ButtonMatrix[row][column-1]);
 		}
 		
-		if (column < boardSize-1) {
+		if (column < gridSize-1) {
 			list.add(ButtonMatrix[row][column+1]);
 		}
 		
@@ -56,7 +54,7 @@ public class ButtonController {
 			list.add(ButtonMatrix[row-1][column]);
 		}
 		
-		if (row < boardSize-1) {
+		if (row < gridSize-1) {
 			list.add(ButtonMatrix[row+1][column]);
 		}
 		
@@ -65,7 +63,7 @@ public class ButtonController {
 
 	private boolean neighborON(Button neighbor){
 	
-			if(neighbor.color != COLOR.gray) {
+			if(neighbor.getColor() != COLOR.gray) {
 				return true;
 			}
 		return false;
@@ -85,7 +83,7 @@ public class ButtonController {
 	private boolean colorMatch(Button button, ArrayList<Button> neighborhood) {
 		
 		for (Button neighbor : neighborhood) {
-			if (neighborON(neighbor) && neighbor.color == button.color) {
+			if (neighborON(neighbor) && neighbor.getColor() == button.getColor()) {
 				return true;
 			}
 		}
@@ -95,17 +93,18 @@ public class ButtonController {
 	protected boolean fullGrid() {
 		for(int row = 0; row < ButtonMatrix.length; row++) {
 			for(int column = 0; column < ButtonMatrix[0].length; column++) {
-			if (ButtonMatrix[row][column].color == COLOR.gray)
+			if (ButtonMatrix[row][column].getColor() == COLOR.gray)
 				return false;
 			}
 		}
 		return true;
 	}
 
-
-	public boolean getGameOver() {
+	public boolean GameOver() {
 		return gameOver;
 	}
+	
+	public COLOR getButtonColor(int r, int c) {
+		return ButtonMatrix[r][c].getColor();
+	}
 }
-
-

@@ -1,34 +1,32 @@
 package view;
 
 import javax.swing.JFrame;
-
 import Controller.ButtonController;
+import Controller.GameScreenController;
 import model.COLOR;
-
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import java.awt.Dimension;
 
 public class GameScreen {
 
 	JFrame frame;
 	int gridSize;
-	JButton[][] JButtonMatrix;
 	ButtonController buttonController;
-	Dimension screenSize;
-	int clicks;
+	GameScreenController GSController;
+	int score;
+	private int difficulty;
 	
 	
 	/**
 	 * Create the application.
+	 * @param difficulty 
 	 */
-	public GameScreen(int size) {
-		this.clicks = 0;
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize(); //para conocer el tamaño del monitor
+	public GameScreen(int size, int difficulty) {
+		this.score = 0;
+		this.difficulty = difficulty;
 		if (size > 7)
 			throw new IllegalArgumentException("");
 		initialize(size);
@@ -37,105 +35,58 @@ public class GameScreen {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(int i) { // i = número de filas y columnas
-		
-		//Creo una matriz con los JButtons
-		gridSize = i;
-		JButtonMatrix = new JButton[i][i];
+	@SuppressWarnings("static-access")
+	private void initialize(int size) { 
+		gridSize = size;
 		frame = new JFrame();
 		frame.setTitle("Hysteria");
 		frame.getContentPane().setBackground(new Color(60, 60, 60));
-		frame.setBounds(0, 0, screenSize.width, screenSize.height);
+		frame.setExtendedState(frame.MAXIMIZED_BOTH);
+        frame.setBounds(100, 100, 720, 480);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new GridLayout(i, i, 1, 1));
+		frame.getContentPane().setLayout(new GridLayout(size, size, 1, 1));
 		
-	
-		//Creamos un presentador
-		buttonController = new ButtonController(i);
+		buttonController = new ButtonController(size);
+		GSController = new GameScreenController(size);
 		
-		//Creamos todos los botones y los agregamos a la matriz JButtonMatrix
-		for(int row = 0; row < JButtonMatrix.length; row++) {
-			for(int column = 0; column < JButtonMatrix[0].length; column++) {
+		for(int row = 0; row < GSController.getSize(); row++) {
+			for(int column = 0; column < GSController.getSize(); column++) {
 			JButton button = new JButton("");
 			button.setBackground(new Color(50,50,50));
 			frame.getContentPane().add(button);
-			JButtonMatrix[row][column] = button;
-			
-		//Creamos el objeto Button asociado al JButton
+			GSController.addToJButtonMatrix(row, column, button);
 			buttonController.addNewButton(row,column);
 		 }
 		}
 
-		//Recorremos los JButtons informando al buttonController cuando uno esté activo
-		for(int row = 0; row < JButtonMatrix.length; row++) {
-			for(int column = 0; column < JButtonMatrix[0].length; column++) {
+		for(int row = 0; row < GSController.getSize(); row++) {
+			for(int column = 0; column < GSController.getSize(); column++) {
 				int r=row;
 				int c=column;
-				JButtonMatrix[row][column].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
-					clicks++;
-					boolean match = buttonController.activeButton(r,c);
-					if (match) {
-						turnOffNeighbors(r, c);
-						JButtonMatrix[r][c].setBackground(new Color(50, 50, 50));
-					}else{
-						updateViews(r, c);
+				GSController.getJButton(r,c).addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						score++;
+						boolean match = buttonController.activeButton(r,c);
+						if (match) {
+				            GSController.turnOffNeighbors(r, c);
+				        } else {
+				            updateViews(r, c);
+				        }
 					}
-				}
 				});
 			}
 		}
 	}
-
-	private void turnOffNeighbors(int row, int column) {
-		
-		if (row+1 < gridSize) {
-			JButtonMatrix[row+1][column].setBackground(new Color(50, 50, 50));
-		}
-		if (row-1 >= 0) {
-			JButtonMatrix[row-1][column].setBackground(new Color(50, 50, 50));
-		}
-		if (column+1 < gridSize) {
-			JButtonMatrix[row][column+1].setBackground(new Color(50, 50, 50));
-		}
-		if (column-1 >= 0) {
-			JButtonMatrix[row][column-1].setBackground(new Color(50, 50, 50));
-		}
-		
-	}
-
+	
 	private void updateViews(int r, int c) {
-		
-		if (buttonController.getGameOver()) {
-			EndScreen end = new EndScreen(clicks,gridSize);
-			frame.dispose();
-			end.frame.setVisible(true);
-		}
-		
-		COLOR color = buttonController.ButtonMatrix[r][c].color; 
-		switch(color) {
-		case red:
-			JButtonMatrix[r][c].setBackground(new Color(255,0,0));
-			break;
-		case blue:
-			JButtonMatrix[r][c].setBackground(new Color(0,0,255));
-			break;
-		case green:
-			JButtonMatrix[r][c].setBackground(new Color(0,255,0));
-			break;
-		case yellow:
-			JButtonMatrix[r][c].setBackground(new Color(255,255,0));
-			break;
-		case cyan:
-			JButtonMatrix[r][c].setBackground(new Color(0,255,255));
-			break;
-		case magenta:
-			JButtonMatrix[r][c].setBackground(new Color(255,0,255));
-			break;
-		default:
-			JButtonMatrix[r][c].setBackground(new Color(50,50,50));
-			break;
-		}
+        if (buttonController.GameOver()) {
+            EndScreen end = new EndScreen(score, difficulty);
+            frame.dispose();
+            end.frame.setVisible(true);
+        } else {
+            COLOR color = buttonController.getButtonColor(r, c); 
+            GSController.changeColor(r, c, color);
+        }
 	}
 }

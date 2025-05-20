@@ -4,10 +4,10 @@ import java.util.Random;
 
 public class Button {
 	
-	COLOR color;
+	private COLOR color;
 
 	public Button() {
-		this.color = COLOR.gray;
+		this.setColor(COLOR.gray);
 	}
 	
 	public void changeColor() {
@@ -36,6 +36,14 @@ public class Button {
 	}
 
 	public void turnOff() {
-		this.color = COLOR.gray;
+		this.setColor(COLOR.gray);
+	}
+
+	public COLOR getColor() {
+		return color;
+	}
+
+	public void setColor(COLOR color) {
+		this.color = color;
 	}
 }

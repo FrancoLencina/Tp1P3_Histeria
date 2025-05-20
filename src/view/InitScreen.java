@@ -9,23 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JToolBar;
-
-import Scores.Score;
-
-import javax.swing.JComboBox;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 public class InitScreen {
 
-	Dimension screenSize;
     private JFrame frame;
 
     public static void main(String[] args) {
@@ -42,14 +31,15 @@ public class InitScreen {
     }
 
     public InitScreen() {
-    	screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         initialize();
     }
 
-    private void initialize() {
+    @SuppressWarnings("static-access")
+	private void initialize() {
         frame = new JFrame();
         frame.setTitle("Hysteria");
-        frame.setBounds(0, 0, screenSize.width, screenSize.height);
+        frame.setExtendedState(frame.MAXIMIZED_BOTH);
+        frame.setBounds(100, 100, 720, 480);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
 
@@ -66,9 +56,9 @@ public class InitScreen {
         btnFacil.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnFacil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		GameScreen vw = new GameScreen(4);
+        		GameScreen gs = new GameScreen(4,1);
 				frame.dispose();
-				vw.frame.setVisible(true);
+				gs.frame.setVisible(true);
         	}
         });
         btnFacil.setBackground(new Color(50,50,50));
@@ -79,9 +69,9 @@ public class InitScreen {
         btnNormal.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnNormal.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		GameScreen vw = new GameScreen(5);
+        		GameScreen gs = new GameScreen(5,2);
 				frame.dispose();
-				vw.frame.setVisible(true);
+				gs.frame.setVisible(true);
         	}
         });
         btnNormal.setBackground(new Color(50,50,50));
@@ -92,9 +82,9 @@ public class InitScreen {
         btnDificil.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnDificil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		GameScreen vw = new GameScreen(6);
+        		GameScreen gs = new GameScreen(6,3);
 				frame.dispose();
-				vw.frame.setVisible(true);
+				gs.frame.setVisible(true);
         	}
         });
         btnDificil.setBackground(new Color(50,50,50));
@@ -105,25 +95,12 @@ public class InitScreen {
         btnMuyDificil.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnMuyDificil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		GameScreen vw = new GameScreen(7);
+        		GameScreen gs = new GameScreen(7,4);
 				frame.dispose();
-				vw.frame.setVisible(true);
+				gs.frame.setVisible(true);
         	}
         });
         btnMuyDificil.setBackground(new Color(50,50,50));
-        panelBotones.add(btnMuyDificil);
-        
-        JMenuBar menuBar = new JMenuBar();
-        frame.setJMenuBar(menuBar);
-        
-        JMenuItem mntmNewMenuItem = new JMenuItem("Reiniciar puntuaciones");
-        mntmNewMenuItem.setBackground(new Color(128, 128, 128));
-        mntmNewMenuItem.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		Score.resetScores();
-        		JOptionPane.showMessageDialog(null, "Las puntuaciones han sido reiniciadas");
-        	}
-        });
-        menuBar.add(mntmNewMenuItem);
+        panelBotones.add(btnMuyDificil); 
     }
 }
