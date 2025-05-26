@@ -67,12 +67,8 @@ public class GameScreen {
 					public void actionPerformed(ActionEvent e) {
 						
 						score++;
-						boolean match = buttonController.activeButton(r,c);
-						if (match) {
-				            GSController.turnOffNeighbors(r, c);
-				        } else {
-				            updateViews(r, c);
-				        }
+						buttonController.changeButtonColor(r,c);
+						updateViews(r, c);
 					}
 				});
 			}
@@ -80,13 +76,24 @@ public class GameScreen {
 	}
 	
 	private void updateViews(int r, int c) {
+		
         if (buttonController.GameOver()) {
+        	
             EndScreen end = new EndScreen(score, difficulty);
             frame.dispose();
             end.frame.setVisible(true);
+            
         } else {
-            COLOR color = buttonController.getButtonColor(r, c); 
-            GSController.changeColor(r, c, color);
+        	
+        	boolean match = buttonController.checkMatch(r,c);
+        	
+			if (match) {
+				buttonController.neighborsOFF(r, c);
+	            GSController.turnOffNeighbors(r, c);
+	        } else {
+	        	COLOR color = buttonController.getButtonColor(r, c); 
+	            GSController.changeColor(r, c, color);
+	        } 
         }
 	}
 }

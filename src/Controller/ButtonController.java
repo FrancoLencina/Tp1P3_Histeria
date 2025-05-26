@@ -8,34 +8,50 @@ public class ButtonController {
 
 	private Button [][] ButtonMatrix;
 	private int gridSize;
-	private boolean gameOver;
 	
 	public ButtonController(int gridSize) {
 		ButtonMatrix = new Button[gridSize][gridSize];  
 		this.gridSize = gridSize;
-		gameOver = false;
 	}
 	
-	
-	public boolean activeButton(int row, int column){
-		boolean result = false;
+	public void changeButtonColor(int row, int column){
 		Button button = ButtonMatrix[row][column];
 		button.changeColor();
-		if (colorMatch(button,neighborhood(row, column))) {
-			neighborsOFF(row,column);
-			result = true;
-			return result;
-		}
-		else
-			if (fullGrid()) {
-				gameOver = true;
-			}
-		return result;
 	}
 
+	public boolean checkMatch(int row, int column) {
+		
+		Button button = ButtonMatrix[row][column];
+		
+		for (Button neighbor : neighborhood(row,column)) {
+			if (neighborON(neighbor) && neighbor.getColor() == button.getColor()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void neighborsOFF(int row, int column) {
+		Button button = ButtonMatrix[row][column];
+		button.turnOff();
+		for (Button neighbor : neighborhood(row, column)) {
+			neighbor.turnOff();
+		}
+	}
+	
 	public void addNewButton(int row, int column) {
 		Button newButton = new Button();
 		ButtonMatrix [row][column] = newButton;
+	}
+	
+	public boolean GameOver() {
+		if(fullGrid())
+			return true;
+		return false;
+	}
+	
+	public COLOR getButtonColor(int r, int c) {
+		return ButtonMatrix[r][c].getColor();
 	}
 
 	private ArrayList<Button> neighborhood(int row, int column){
@@ -69,28 +85,7 @@ public class ButtonController {
 		return false;
 	}
 	
-	private void neighborsOFF(int row, int column) {
-		Button button = ButtonMatrix[row][column];
-		if (colorMatch(button, neighborhood(row, column))) {
-			
-			button.turnOff();
-			for (Button neighbor : neighborhood(row, column)) {
-				neighbor.turnOff();
-			}
-		}
-	}
-	
-	private boolean colorMatch(Button button, ArrayList<Button> neighborhood) {
-		
-		for (Button neighbor : neighborhood) {
-			if (neighborON(neighbor) && neighbor.getColor() == button.getColor()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	protected boolean fullGrid() {
+	private boolean fullGrid() {
 		for(int row = 0; row < ButtonMatrix.length; row++) {
 			for(int column = 0; column < ButtonMatrix[0].length; column++) {
 			if (ButtonMatrix[row][column].getColor() == COLOR.gray)
@@ -98,13 +93,5 @@ public class ButtonController {
 			}
 		}
 		return true;
-	}
-
-	public boolean GameOver() {
-		return gameOver;
-	}
-	
-	public COLOR getButtonColor(int r, int c) {
-		return ButtonMatrix[r][c].getColor();
 	}
 }

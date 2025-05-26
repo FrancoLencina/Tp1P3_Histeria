@@ -56,7 +56,7 @@ public class InitScreen {
         btnFacil.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnFacil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		GameScreen gs = new GameScreen(4,1);
+        		GameScreen gs = new GameScreen(4,0);
 				frame.dispose();
 				gs.frame.setVisible(true);
         	}
@@ -69,7 +69,7 @@ public class InitScreen {
         btnNormal.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnNormal.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		GameScreen gs = new GameScreen(5,2);
+        		GameScreen gs = new GameScreen(5,1);
 				frame.dispose();
 				gs.frame.setVisible(true);
         	}
@@ -82,7 +82,7 @@ public class InitScreen {
         btnDificil.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnDificil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		GameScreen gs = new GameScreen(6,3);
+        		GameScreen gs = new GameScreen(6,2);
 				frame.dispose();
 				gs.frame.setVisible(true);
         	}
@@ -95,7 +95,7 @@ public class InitScreen {
         btnMuyDificil.setFont(new Font("Tahoma", Font.PLAIN, 48));
         btnMuyDificil.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		GameScreen gs = new GameScreen(7,4);
+        		GameScreen gs = new GameScreen(2,3);
 				frame.dispose();
 				gs.frame.setVisible(true);
         	}
